@@ -1,9 +1,16 @@
 import { Request, Response } from "express";
+import { CustomError } from "../../domain/errors/custom.error";
 
 export class ListsController {
   constructor() {}
 
-  createList = (req: Request, res: Response) => {
+  private handleError = (error: unknown, res: Response) => {
+    if (error instanceof CustomError) {
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
+
+  createList = async(req: Request, res: Response) => {
     res.send('createList');
   }
 
