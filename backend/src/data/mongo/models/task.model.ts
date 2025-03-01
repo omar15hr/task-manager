@@ -13,7 +13,11 @@ const taskSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  listId: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: "List", 
+    required: true 
+  },
 });
-
 
 export const Task = mongoose.model("Task", taskSchema);
