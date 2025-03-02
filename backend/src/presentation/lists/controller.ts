@@ -10,21 +10,29 @@ export class ListsController {
 
   private handleError = (error: unknown, res: Response) => {
     if (error instanceof CustomError) {
-      return res.status(500).json({ error: 'Internal Server Error' });
+      return res.status(error.statusCode).json({ error: error.message });
     }
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 
-  createList = async(req: Request, res: Response) => {
+  createList = async (req: Request, res: Response) => {
     const [error, createListDto] = CreateListDto.create(req.body);
-    if (error) return res.status(400).json({ error });
+    if (error) {
+      res.status(400).json({ error });
+      return;
+    }
 
-    this.listService.createList(createListDto!)
-      .then(list => res.status(201).json(list))
-      .catch(error => this.handleError(error, res));
+    try {
+      const list = await this.listService.createList(createListDto!);
+      res.status(201).json(list);
+    } catch (error) {
+      this.handleError(error, res);
+    }
   }
 
   getLists = (req: Request, res: Response) => {
     res.send('getLists');
+
   }
 
   deleteList = (req: Request, res: Response) => {

@@ -1,3 +1,5 @@
+import { CustomError } from "../../errors/custom.error";
+
 export class CreateListDto {
 
   private constructor(
@@ -7,10 +9,10 @@ export class CreateListDto {
   static create( object: { [key: string]: any } ): [string?, CreateListDto?] {
     const { name } = object;
 
-    if (!name) throw new Error("Missing name");
-    if (name.length < 3) throw new Error("Name must be at least 3 characters");
-    if (name.length > 20) throw new Error("Name must be at most 20 characters");
-    if (name.startWith(" ")) throw new Error("Name cannot start with a space");
+    if (!name) return ["Name is required"];
+    if (name.length < 3) return ["Name must be at least 3 characters"];
+    if (name.length > 20) return ["Name must be at most 20 characters"];
+  
 
     return [undefined, new CreateListDto(name)];
   }

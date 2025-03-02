@@ -6,25 +6,26 @@ export class ListService {
   constructor() {}
 
   async createList ( createListDto: CreateListDto) {
-    const list = await List.findOne({ name: createListDto.name });
-    if (list) throw CustomError.badRequest("List already exists");
+    const listExists = await List.findOne({ name: createListDto.name });
+    if (listExists) throw CustomError.badRequest("List already exists");
 
     try {
 
-      const newList = new List({
-        ...createListDto
+      const list = new List({
+        name: createListDto.name,
+        tasks: [],
       });
 
-      await newList.save();
+      await list.save();
 
       return {
-        id: newList.id,
-        name: newList.name,
+        id: list.id,
+        name: list.name,
         tasks: [],
       }
       
     } catch (error) {
-      throw CustomError.internalServerError("Internal Server Error");
+      throw CustomError.internalServerError(`${error}`);
     }
   }
 }
