@@ -1,10 +1,13 @@
 import { Router } from "express";
 import { ListsController } from "./controller";
+import { ListService } from "../services/list.service";
 
 export class ListsRoutes {
   static get routes(): Router {
     const router = Router();
-    const controller = new ListsController();
+
+    const listService = new ListService();
+    const controller = new ListsController(listService);
 
     // Definir las rutas
     router.get('/', controller.getLists );
