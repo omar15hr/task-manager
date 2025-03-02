@@ -1,16 +1,16 @@
 import { Router } from "express";
-import { CardsController } from "./controller";
+import { TasksController } from "./controller";
 
 export class CardsRoutes {
   static get routes(): Router {
     const router = Router();
-    const controller = new CardsController();
+    const controller = new TasksController();
 
     // Definir las rutas
-    router.get('', controller.getCards );
-    router.post('', controller.createCard );
-    router.put('/:cardId', controller.updateCard );
-    router.delete('/:cardId', controller.deleteCard );
+    router.get('', controller.getTasks );
+    router.post('', controller.createTask );
+    router.put('/:cardId', controller.updateTask );
+    router.delete('/:cardId', controller.deleteTask );
 
     return router;
   }

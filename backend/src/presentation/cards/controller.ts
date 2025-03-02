@@ -1,22 +1,29 @@
 import { Request, Response } from "express";
+import { CustomError } from "../../domain/errors/custom.error";
 
-export class CardsController {
+export class TasksController {
   constructor() {}
 
-  createCard = (req: Request, res: Response) => {
-    res.send('createCard');
-  }
+  private handleError = (error: unknown, res: Response) => {
+    if (error instanceof CustomError) {
+      return res.status(error.statusCode).json({ error: error.message });
+    }
+    return res.status(500).json({ error: "Internal Server Error" });
+  };
 
-  getCards = (req: Request, res: Response) => {
-    res.send('getCards');
-  }
+  getTasks = (req: Request, res: Response) => {
+    res.send("getTasks");
+  };
 
-  deleteCard = (req: Request, res: Response) => {
-    res.send('deleteCard');
-  }
+  createTask = (req: Request, res: Response) => {
+    res.send("createTask");
+  };
 
-  updateCard = (req: Request, res: Response) => {
-    res.send('updateCard');
-  }
+  updateTask = (req: Request, res: Response) => {
+    res.send("updateTask");
+  };
 
+  deleteTask = (req: Request, res: Response) => {
+    res.send("deleteTask");
+  };
 }
