@@ -28,4 +28,20 @@ export class ListService {
       throw CustomError.internalServerError(`${error}`);
     }
   }
+
+  async getLists() {
+    try {
+
+      const lists = await List.find();
+
+      return lists.map(list => ({
+        id: list.id,
+        name: list.name,
+        tasks: [],
+      }))
+      
+    } catch (error) {
+      throw CustomError.internalServerError('Internal Server Error');
+    }
+  }
 }

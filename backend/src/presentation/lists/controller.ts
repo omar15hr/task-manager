@@ -22,17 +22,15 @@ export class ListsController {
       return;
     }
 
-    try {
-      const list = await this.listService.createList(createListDto!);
-      res.status(201).json(list);
-    } catch (error) {
-      this.handleError(error, res);
-    }
+    this.listService.createList(createListDto!)
+      .then(list => res.status(201).json(list))
+      .catch(error => this.handleError(error, res));
   }
 
   getLists = (req: Request, res: Response) => {
-    res.send('getLists');
-
+    this.listService.getLists()
+      .then(lists => res.status(200).json(lists))
+      .catch(error => this.handleError(error, res));
   }
 
   deleteList = (req: Request, res: Response) => {
