@@ -12,8 +12,8 @@ export class ListsRoutes {
     // Definir las rutas
     router.get('/', controller.getLists );
     router.post('/', controller.createList );
-    router.put('/:id', controller.updateList );
-    router.delete('/:id', controller.deleteList );
+    router.put('/:listId', controller.updateList );
+    router.delete('/:listId', controller.deleteList );
 
     return router;
   }

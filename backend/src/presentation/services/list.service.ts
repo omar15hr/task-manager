@@ -1,5 +1,6 @@
 import { List } from "../../data/mongo/models/list.model";
 import { CreateListDto } from "../../domain/dtos/list/create-list.dto";
+import { UpdateListDto } from "../../domain/dtos/list/update-list.dto";
 import { CustomError } from "../../domain/errors/custom.error";
 
 export class ListService {
@@ -35,6 +36,24 @@ export class ListService {
       }));
     } catch (error) {
       throw CustomError.internalServerError("Internal Server Error");
+    }
+  }
+
+  async updateList(updateListDto: UpdateListDto, listId: string) {
+    try {
+
+      const updatedList = await List.findByIdAndUpdate(listId, updateListDto, { new: true });
+
+      if (!updatedList) {
+        throw CustomError.notFound("List not found");
+      }
+
+      return {
+        id: updatedList.id,
+        name: updatedList.name,
+      };
+    } catch (error) {
+      throw CustomError.internalServerError(`${error}`);
     }
   }
 }
