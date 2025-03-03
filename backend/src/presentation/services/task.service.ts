@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import { Task } from "../../data/mongo/models/task.model";
 import { UpdateTaskDto } from "../../domain/dtos/task/update-task.dto";
 import { CustomError } from "../../domain/errors/custom.error";
@@ -82,6 +83,31 @@ export class TaskService {
         description: updatedTask.description,
         listId: updatedTask.list,
         isCompleted: updatedTask.isCompleted,
+      };
+    } catch (error) {
+      throw CustomError.internalServerError(`${error}`);
+    }
+  }
+
+  async deleteTask(taskId: string) {
+    try {
+
+      if (!Types.ObjectId.isValid(taskId)) {
+        throw CustomError.badRequest("Invalid task ID format");
+      }
+
+      if (!taskId) return { message: "Task ID is required" };
+      
+      const deletedTask = await Task.findByIdAndDelete(taskId);
+      if (!deletedTask) throw CustomError.notFound("Task not found");
+
+      return {
+        id: deletedTask.id,
+        name: deletedTask.name,
+        description: deletedTask.description,
+        listId: deletedTask.list,
+        isCompleted: deletedTask.isCompleted,
+        message: 'Task deleted successfully',
       };
     } catch (error) {
       throw CustomError.internalServerError(`${error}`);

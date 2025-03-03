@@ -92,7 +92,16 @@ export class TasksController {
       .catch((error) => this.handleError(error, res));
   };
 
+
   deleteTask = (req: Request, res: Response) => {
-    res.send("deleteTask");
+    const { taskId } = req.params;
+    if (!taskId) {
+      res.status(400).json({ error: "Task ID is required" });
+      return;
+    }
+
+    this.taskService.deleteTask(taskId)
+      .then((task) => res.status(200).json(task))
+      .catch((error) => this.handleError(error, res));
   };
 }

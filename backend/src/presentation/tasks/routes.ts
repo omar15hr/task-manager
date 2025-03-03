@@ -14,7 +14,7 @@ export class TasksRoutes {
     router.get("/:taskId", controller.getTaskById);
     router.post("/:listId/tasks", controller.createTask);
     router.put("/:taskId", controller.updateTask);
-    router.delete("/:id", controller.deleteTask);
+    router.delete("/:taskId", controller.deleteTask);
 
     return router;
   }
