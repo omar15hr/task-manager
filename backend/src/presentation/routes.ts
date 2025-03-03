@@ -8,7 +8,7 @@ export class AppRoutes {
 
     // Definir las rutas
     router.use('/api/lists', ListsRoutes.routes );
-    router.use('/api/lists/:listId/cards', CardsRoutes.routes );
+    router.use('/api/tasks', CardsRoutes.routes );
 
     return router;
   }

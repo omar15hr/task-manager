@@ -9,11 +9,11 @@ const taskSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  completed: {
+  isCompleted: {
     type: Boolean,
     default: false,
   },
-  listId: { 
+  list: { 
     type: mongoose.Schema.Types.ObjectId, 
     ref: "List", 
     required: true 

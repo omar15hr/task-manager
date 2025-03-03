@@ -13,7 +13,6 @@ export class ListService {
 
       const list = new List({
         name: createListDto.name,
-        tasks: [],
       });
 
       await list.save();
@@ -21,7 +20,6 @@ export class ListService {
       return {
         id: list.id,
         name: list.name,
-        tasks: [],
       }
       
     } catch (error) {
@@ -37,7 +35,6 @@ export class ListService {
       return lists.map(list => ({
         id: list.id,
         name: list.name,
-        tasks: [],
       }))
       
     } catch (error) {

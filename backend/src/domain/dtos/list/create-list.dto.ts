@@ -6,7 +6,7 @@ export class CreateListDto {
 
     if (!name) return ["Name is required"];
     if (name.length < 3) return ["Name must be at least 3 characters"];
-    if (name.length > 20) return ["Name must be at most 20 characters"];
+    if (name.length > 40) return ["Name must be at most 40 characters"];
 
     return [undefined, new CreateListDto(name)];
   }

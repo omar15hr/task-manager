@@ -4,6 +4,6 @@ export class TaskEntity {
     public readonly name: string,
     public readonly description: string,
     public readonly listId: string,
-    public readonly completed: string,
+    public readonly isCompleted: string,
   ) {}
 }
