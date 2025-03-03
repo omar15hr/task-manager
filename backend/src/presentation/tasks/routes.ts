@@ -10,10 +10,10 @@ export class TasksRoutes {
     const controller = new TasksController(taskService);
 
     // Definir las rutas
-    router.get("/", controller.getTasks);
-    router.get("/:id", controller.getTaskById);
+    router.get("/:listId/tasks", controller.getTasks);
+    router.get("/:taskId", controller.getTaskById);
     router.post("/:listId/tasks", controller.createTask);
-    router.put("/:id", controller.updateTask);
+    router.put("/:taskId", controller.updateTask);
     router.delete("/:id", controller.deleteTask);
 
     return router;

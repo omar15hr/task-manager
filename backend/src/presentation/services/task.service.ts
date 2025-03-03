@@ -1,4 +1,5 @@
 import { Task } from "../../data/mongo/models/task.model";
+import { UpdateTaskDto } from "../../domain/dtos/task/update-task.dto";
 import { CustomError } from "../../domain/errors/custom.error";
 import { CreateTaskDto } from "./../../domain/dtos/task/create-task.dto";
 export class TaskService {
@@ -6,10 +7,9 @@ export class TaskService {
 
   async createTask(createTaskDto: CreateTaskDto, listId: string) {
     try {
-
       const task = new Task({
         name: createTaskDto.name,
-        description: '',
+        description: "",
         list: listId,
         isCompleted: false,
       });
@@ -22,19 +22,32 @@ export class TaskService {
         description: task.description,
         listId: task.list,
         isCompleted: task.isCompleted,
-      }
-
+      };
     } catch (error) {
       throw CustomError.internalServerError(`${error}`);
     }
   }
 
-  async getTasks() {}
 
-  async getTaskById(listId: string) {
+  async getTasks(listId: string) {
     try {
+      const tasks = await Task.find({ list: listId });
+      return tasks.map((task) => ({
+        id: task.id,
+        name: task.name,
+        description: task.description,
+        listId: task.list,
+        isCompleted: task.isCompleted,
+      }));
+    } catch (error) {
+      throw CustomError.internalServerError(`${error}`);
+    }
+  }
 
-      const task = await Task.findById({ list: listId });
+
+  async getTaskById(taskId: string) {
+    try {
+      const task = await Task.findById(taskId);
       if (!task) throw CustomError.notFound("Task not found");
 
       return {
@@ -43,10 +56,36 @@ export class TaskService {
         description: task.description,
         listId: task.list,
         isCompleted: task.isCompleted,
-      }
-      
+      };
     } catch (error) {
       throw CustomError.internalServerError(`${error}`);
     }
   }
+
+  async updateTask(updateTaskDto: UpdateTaskDto, taskId: string) {
+    try {
+      const updateData: { [key: string]: any } = {};
+      if (updateTaskDto.name) updateData.name = updateTaskDto.name;
+      if (updateTaskDto.description) updateData.description = updateTaskDto.description;
+      if (updateTaskDto.isCompleted !== undefined) updateData.isCompleted = updateTaskDto.isCompleted;
+      if (updateTaskDto.listId) updateData.list = updateTaskDto.listId;
+  
+      const updatedTask = await Task.findByIdAndUpdate(taskId, updateData, { new: true });
+  
+      if (!updatedTask) {
+        throw CustomError.notFound("Task not found");
+      }
+  
+      return {
+        id: updatedTask.id,
+        name: updatedTask.name,
+        description: updatedTask.description,
+        listId: updatedTask.list,
+        isCompleted: updatedTask.isCompleted,
+      };
+    } catch (error) {
+      throw CustomError.internalServerError(`${error}`);
+    }
+  }
+  
 }
