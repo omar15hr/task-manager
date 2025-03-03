@@ -38,7 +38,15 @@ export class ListsController {
 
 
   deleteList = (req: Request, res: Response) => {
-    res.send('deleteList');
+    const { listId } = req.params;
+    if (!listId) {
+      res.status(400).json({ error: "List ID is required" });
+      return;
+    }
+
+    this.listService.deleteList(listId)
+      .then((list) => res.status(200).json(list))
+      .catch((error) => this.handleError(error, res));
   }
 
 

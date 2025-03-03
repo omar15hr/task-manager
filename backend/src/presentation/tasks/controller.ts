@@ -18,12 +18,6 @@ export class TasksController {
 
 
   getTasks = (req: Request, res: Response) => {
-    const [error] = CreateTaskDto.create(req.body);
-    if (error) {
-      res.status(400).json({ error });
-      return;
-    }
-
     const { listId } = req.params;
     if (!listId) {
       res.status(400).json({ error: "List ID is required" });

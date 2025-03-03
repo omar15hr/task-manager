@@ -113,5 +113,20 @@ export class TaskService {
       throw CustomError.internalServerError(`${error}`);
     }
   }
+
+  async deleteTaskByListId(listId: string) {
+    try {
+
+      const deletedTasks = await Task.deleteMany({ list: listId });
+      if (!deletedTasks) throw CustomError.notFound("Task not found");
+
+      return {
+        message: 'Tasks deleted successfully',
+      };
+      
+    } catch (error) {
+      throw CustomError.internalServerError(`Error deleting tasks: ${error}`);
+    }
+  }
   
 }
