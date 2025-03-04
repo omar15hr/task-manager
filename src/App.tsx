@@ -1,0 +1,13 @@
+import { Sidebar } from "./components/UI/Sidebar"
+
+function App() {
+
+  return (
+    <>
+    <Sidebar />
+      <h1>Hello World</h1>
+    </>
+  )
+}
+
+export default App
