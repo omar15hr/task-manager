@@ -5,7 +5,6 @@ function App() {
   return (
     <>
     <Sidebar />
-      <h1>Hello World</h1>
     </>
   )
 }
