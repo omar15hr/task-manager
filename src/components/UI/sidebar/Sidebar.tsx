@@ -1,14 +1,6 @@
 import { useState } from "react";
-import { Dots, Plus, ThreePoints, Toggle, X } from "../Icons";
-import { Popover, PopoverContent, PopoverTrigger } from "../UI/popover";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "../UI/Dropmenu";
+import { Plus, ThreePoints, Toggle, X } from "../../Icons";
+import { BoardOptionsPopover } from "./BoardOptionsPopover";
 
 const BOARDS = [
   {
@@ -55,34 +47,7 @@ export function Sidebar() {
         <div className="flex justify-between mb-4">
           <span className="font-bold">Sus tableros</span>
           <div className="flex gap-4">
-            <Popover>
-              <PopoverTrigger>
-                <Dots size={24} />
-              </PopoverTrigger>
-              <PopoverContent className="bg-[#282e33] border-none text-[#9EACBA]">
-                <div className="flex flex-col gap-1">
-                  <div className="flex justify-between items-center">
-                    <div className="flex-1"></div>
-                    <span className="text-sm">Sus tableros</span>
-                    <div className="flex-1 flex justify-end">
-                      <X size={18} />
-                    </div>
-                  </div>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger>Open</DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                      <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem>Profile</DropdownMenuItem>
-                      <DropdownMenuItem>Billing</DropdownMenuItem>
-                      <DropdownMenuItem>Team</DropdownMenuItem>
-                      <DropdownMenuItem>Subscription</DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </div>
-              </PopoverContent>
-            </Popover>
-
+            <BoardOptionsPopover />
             <Plus size={24} />
           </div>
         </div>
