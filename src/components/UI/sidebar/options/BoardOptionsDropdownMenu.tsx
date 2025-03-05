@@ -4,8 +4,8 @@ import {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
-} from "../Dropmenu";
-import { ChevronDown } from "../../Icons";
+} from "../../Dropmenu";
+import { ChevronDown } from "../../../Icons";
 import { useState } from "react";
 
 export function BoardOptionsDropdownMenu() {

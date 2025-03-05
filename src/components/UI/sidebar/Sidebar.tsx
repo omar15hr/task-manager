@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Plus, ThreePoints, Toggle, X } from "../../Icons";
-import { BoardOptionsPopover } from "./BoardOptionsPopover";
+import { ThreePoints, Toggle, X } from "../../Icons";
+import { BoardOptionsPopover } from "./options/BoardOptionsPopover";
+import { AddBoardPopover } from "./add/AddBoardPopover";
 
 const BOARDS = [
   {
@@ -48,24 +49,22 @@ export function Sidebar() {
           <span className="font-bold">Sus tableros</span>
           <div className="flex gap-4">
             <BoardOptionsPopover />
-            <Plus size={24} />
+            <AddBoardPopover />
           </div>
         </div>
 
         <ul className="flex flex-col gap-1">
           {BOARDS.map((board) => (
-            <li>
+            <li
+              className={`flex gap-3 rounded-md items-center cursor-pointer p-2 hover:bg-[#3F4046] 
+              ${selectedBoard.id === board.id ? "bg-[#64656d]" : ""} `}
+              key={board.id}
+            >
               <div
-                className={`flex gap-3 rounded-md items-center cursor-pointer p-2 hover:bg-[#3F4046] 
-                ${selectedBoard.id === board.id ? "bg-[#64656d]" : ""} `}
-                key={board.id}
-              >
-                <div
-                  style={{ background: board.background }}
-                  className="w-6 h-6"
-                ></div>
-                <span className="text-sm">{board.title}</span>
-              </div>
+                style={{ background: board.background }}
+                className="w-6 h-6"
+              ></div>
+              <span className="text-sm">{board.title}</span>
             </li>
           ))}
         </ul>

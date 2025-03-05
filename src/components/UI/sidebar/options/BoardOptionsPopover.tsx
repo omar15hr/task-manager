@@ -1,5 +1,5 @@
 import { Dots, X } from "@/components/Icons";
-import { Popover, PopoverContent, PopoverTrigger } from "../Popover";
+import { Popover, PopoverContent, PopoverTrigger } from "../../Popover";
 
 import { BoardOptionsDropdownMenu } from "./BoardOptionsDropdownMenu";
 import { useState } from "react";
