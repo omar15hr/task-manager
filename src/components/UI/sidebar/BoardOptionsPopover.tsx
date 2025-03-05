@@ -2,10 +2,13 @@ import { Dots, X } from "@/components/Icons";
 import { Popover, PopoverContent, PopoverTrigger } from "../Popover";
 
 import { BoardOptionsDropdownMenu } from "./BoardOptionsDropdownMenu";
+import { useState } from "react";
 
 export function BoardOptionsPopover() {
+  const [open, setOpen] = useState(false);
+
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger>
         <Dots size={24} />
       </PopoverTrigger>
@@ -15,7 +18,7 @@ export function BoardOptionsPopover() {
             <div className="flex-1"></div>
             <span className="text-sm">Sus tableros</span>
             <div className="flex-1 flex justify-end">
-              <X size={18}  />
+              <X size={18} onClickFn={() => setOpen(false)} />
             </div>
           </div>
           <BoardOptionsDropdownMenu />
