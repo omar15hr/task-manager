@@ -1,4 +1,4 @@
-import { Boards } from "./components/Boards";
+import { Boards } from "./components/board/Boards";
 import { Sidebar } from "./components/UI/sidebar/Sidebar";
 
 function App() {

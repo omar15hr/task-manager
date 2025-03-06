@@ -10,7 +10,7 @@ export function BoardOptionsPopover() {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger>
-        <Dots size={24} />
+        <Dots size={24} className="hover:bg-[#64656d]" />
       </PopoverTrigger>
       <PopoverContent className="bg-[#282e33] border-none text-[#9EACBA]">
         <div className="flex flex-col gap-1">
