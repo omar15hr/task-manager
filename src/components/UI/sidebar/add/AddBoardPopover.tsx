@@ -10,7 +10,7 @@ export function AddBoardPopover() {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger>
-        <Plus size={24} />
+        <Plus size={24} className="hover:bg-[#64656d]" />
       </PopoverTrigger>
       <PopoverContent className="bg-[#282e33] border-none text-[#9EACBA]">
         <div className="flex flex-col gap-1">
