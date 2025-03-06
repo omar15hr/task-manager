@@ -77,7 +77,7 @@ export function SidebarForm({setOpen}: SidebarFormProps) {
       <input
         type="text"
         name="title"
-        className={`w-full border-2 p-1 rounded-sm ${
+        className={`w-full border-2 p-1 text-sm rounded-sm ${
           hasError ? "border-red-500" : "border-blue-500"
         } focus:border-blue-500`}
         autoFocus
