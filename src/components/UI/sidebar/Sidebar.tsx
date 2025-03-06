@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ThreePoints, Toggle, X } from "../../Icons";
 import { BoardOptionsPopover } from "./options/BoardOptionsPopover";
 import { AddBoardPopover } from "./add/AddBoardPopover";
+import { BoardDeletePopover } from "./delete/BoardDeletePopover";
 
 const BOARDS = [
   {
@@ -56,15 +57,18 @@ export function Sidebar() {
         <ul className="flex flex-col gap-1">
           {BOARDS.map((board) => (
             <li
-              className={`flex gap-3 rounded-md items-center cursor-pointer p-2 hover:bg-[#3F4046] 
+              className={`flex justify-between gap-3 rounded-md items-center cursor-pointer p-2 hover:bg-[#3F4046] 
               ${selectedBoard.id === board.id ? "bg-[#64656d]" : ""} `}
               key={board.id}
             >
-              <div
-                style={{ background: board.background }}
-                className="w-6 h-6"
-              ></div>
-              <span className="text-sm">{board.title}</span>
+              <div className="flex gap-2">
+                <div
+                  style={{ background: board.background }}
+                  className="w-6 h-6"
+                ></div>
+                <span className="text-sm">{board.title}</span>
+              </div>
+              <BoardDeletePopover />
             </li>
           ))}
         </ul>
