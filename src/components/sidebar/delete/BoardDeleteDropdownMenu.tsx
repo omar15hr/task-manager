@@ -1,8 +1,6 @@
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-} from "../../Dropmenu";
-import { ChevronRight } from "../../../Icons";
+
+import { DropdownMenu, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
+import { ChevronRight } from "../../Icons";
 
 interface Props {
   isDeleting: boolean;

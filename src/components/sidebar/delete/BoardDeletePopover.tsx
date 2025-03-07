@@ -1,5 +1,5 @@
 import { ChevronLeft, Dots, X } from "@/components/Icons";
-import { Popover, PopoverContent, PopoverTrigger } from "../../Popover";
+import { Popover, PopoverContent, PopoverTrigger } from '../../UI/Popover';
 import { useState } from "react";
 import { BoardDeleteDropdownMenu } from "./BoardDeleteDropdownMenu";
 
@@ -21,7 +21,7 @@ export function BoardDeletePopover({ isDeleting, setIsDeleting }: Props) {
         <Dots size={24} className="hover:bg-[#64656d]" />
       </PopoverTrigger>
       <PopoverContent className="bg-[#282e33] border-none text-[#9EACBA]">
-        {isDeleting ? (
+        {!isDeleting ? (
           <div className="flex flex-col gap-1">
             <div className="flex justify-between items-center">
               <div className="flex-1"></div>

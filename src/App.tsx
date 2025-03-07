@@ -1,5 +1,5 @@
 import { Boards } from "./components/board/Boards";
-import { Sidebar } from "./components/UI/sidebar/Sidebar";
+import { Sidebar } from "./components/sidebar/Sidebar";
 
 function App() {
   return (

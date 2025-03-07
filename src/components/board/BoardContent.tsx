@@ -1,4 +1,5 @@
 import { Plus } from "../Icons";
+import { ListOptionsPopover } from "../list/ListOptionsPopover";
 
 const INITIAL_LISTS = [
   {
@@ -15,7 +16,7 @@ const INITIAL_LISTS = [
     id: 3,
     title: "List 3",
     boardId: 1,
-  }
+  },
 ];
 
 const INITIAL_TASKS = [
@@ -68,36 +69,36 @@ const INITIAL_TASKS = [
     id: 10,
     title: "Task 10",
     listId: 1,
-  }
+  },
 ];
 
 export function BoardContent() {
   return (
     <div className="flex gap-5 p-5">
       {INITIAL_LISTS.map((list) => (
-        <div
-          key={list.id}
-        >
+        <div key={list.id}>
           <div className="w-70 bg-[#101204] text-[#9EACBA] p-2 rounded-md flex flex-col">
-            <h2 className="p-2 font-bold">{list.title}</h2>
-          <div className="flex flex-col gap-2 mt-2 p-1">
-            {INITIAL_TASKS.filter((task) => task.listId === list.id).map(
-              (task) => (
-                <div
-                  key={task.id}
-                  className="flex gap-3 items-center p-2 rounded-md bg-[#22272B] cursor-pointer text-sm"
-                >
-                  <span>{task.title}</span>
-                </div>
-              )
-            )}
-          </div>
+            <div className="flex justify-between items-center">
+              <h2 className="p-2 font-bold">{list.title}</h2>
+              <ListOptionsPopover />
+            </div>
+            <div className="flex flex-col gap-2 mt-2 p-1">
+              {INITIAL_TASKS.filter((task) => task.listId === list.id).map(
+                (task) => (
+                  <div
+                    key={task.id}
+                    className="flex gap-3 items-center p-2 rounded-md bg-[#22272B] cursor-pointer text-sm"
+                  >
+                    <span>{task.title}</span>
+                  </div>
+                )
+              )}
+            </div>
             <div className="flex gap-1 items-center p-2 mt-2 hover:bg-gray-700/70 rounded-md cursor-pointer">
               <Plus size={24} />
               <span className="text-sm font-bold">Añade una tarjeta</span>
             </div>
           </div>
-
         </div>
       ))}
     </div>

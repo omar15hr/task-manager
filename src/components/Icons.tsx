@@ -91,7 +91,7 @@ export function Plus({ size = 24, className }: IconProps) {
   );
 }
 
-export function Dots({ size = 24, className }: IconProps) {
+export function Dots({ size = 24, className, onClickFn }: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -103,6 +103,7 @@ export function Dots({ size = 24, className }: IconProps) {
       strokeWidth={2}
       strokeLinecap="round"
       strokeLinejoin="round"
+      onClick={onClickFn}
       className={`icon icon-tabler icons-tabler-outline icon-tabler-dots cursor-pointer ${className} p-1 rounded-md`}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
