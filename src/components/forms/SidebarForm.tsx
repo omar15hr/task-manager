@@ -1,13 +1,13 @@
-import { BoardContext } from "@/store/BoardProvider";
-import { useContext, useState } from "react";
+import { boardStore } from "@/store/boardStore";
+import { useState } from "react";
 
 const BACKGROUNDS = [
   { id: 1, background: "#8F3F65" },
   { id: 2, background: "#352A57" },
   { id: 3, background: "#4C2E5D" },
-  { id: 4, background: "#4C2E5D" },
-  { id: 5, background: "#4C2E5D" },
-  { id: 6, background: "#4C2E5D" },
+  { id: 4, background: "#4C2E3D" },
+  { id: 5, background: "#4C2E2D" },
+  { id: 6, background: "#4C2E1F" },
 ];
 
 interface SidebarFormProps {
@@ -16,8 +16,8 @@ interface SidebarFormProps {
 
 export function SidebarForm({setOpen}: SidebarFormProps) {
   const [hasError, setHasError] = useState(true);
-  const [selectedBackground, setSelectedBackground] = useState<string | null>(null);
-  const { addBoard } = useContext(BoardContext);
+  const [selectedBackground, setSelectedBackground] = useState<string>('');
+  const addBoard = boardStore(state => state.addBoard);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -32,11 +32,15 @@ export function SidebarForm({setOpen}: SidebarFormProps) {
       return;
     }
 
-    addBoard({
-      id: +crypto.randomUUID(),
+    const background = selectedBackground?.length === 0 ? '#8F3F65' : selectedBackground;
+
+    const newBoard = {
+      id: crypto.randomUUID(),
       title,
-      background: selectedBackground as string,
-    })
+      background
+    };
+    
+    addBoard(newBoard);
     setHasError(true);
     setOpen(false);
     form.reset();
@@ -71,7 +75,7 @@ export function SidebarForm({setOpen}: SidebarFormProps) {
               <span
                 onClick={() => setSelectedBackground(bg.background)}
                 style={{ background: bg.background }}
-                className="w-10 h-10 rounded-md cursor-pointer hover:opacity-80"
+                className={`w-10 h-10 rounded-md cursor-pointer hover:opacity-80 ${selectedBackground === bg.background ? "border-2 border-blue-500" : "" }`}
               ></span>
             </div>
           ))}
@@ -92,7 +96,7 @@ export function SidebarForm({setOpen}: SidebarFormProps) {
       />
 
       <button
-        type="button"
+        type="submit"
         disabled={hasError}
         className={`text-sm mt-5 w-full bg-[#343c42] hover:bg-[#444f57] p-2 rounded-sm ${
           hasError ? "cursor-not-allowed opacity-50" : "cursor-pointer"

@@ -4,17 +4,16 @@ import { BoardOptionsPopover } from "./options/BoardOptionsPopover";
 import { AddBoardPopover } from "./add/AddBoardPopover";
 import { BoardDeletePopover } from "./delete/BoardDeletePopover";
 import { Board } from "@/types";
+import { boardStore } from "@/store/boardStore";
 
-interface Props {
-  boards: Board[];
-  boardSelected: React.Dispatch<React.SetStateAction<Board | null>>;
-}
 
-export function Sidebar({ boards, boardSelected }: Props) {
+
+export function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [selectedBoard, setSelectedBoard] = useState<Board | null>(null);
 
+  const boards = boardStore( state => state.boards );
   console.log(boards)
 
   const toggleSidebar = () => {
@@ -22,7 +21,6 @@ export function Sidebar({ boards, boardSelected }: Props) {
   };
 
   const handleSelectBoard = (board: Board) => {
-    boardSelected(board);
     setSelectedBoard(board);
   };
 
@@ -63,10 +61,10 @@ export function Sidebar({ boards, boardSelected }: Props) {
               key={board.id}
               onClick={() => handleSelectBoard(board)}
             >
-              <div className="flex gap-2">
+              <div className="flex gap-2 items-center">
                 <div
                   style={{ background: board.background }}
-                  className="w-6 h-6"
+                  className="min-w-6 h-6"
                 ></div>
                 <span className="text-sm">{board.title}</span>
               </div>

@@ -13,7 +13,8 @@ interface ListProps {
 
 export function ListContainer({ list }: ListProps) {
   const { id, title } = list;
-  const { tasks } = useContext(BoardContext);
+
+  const tasks = []
 
   const filteredTasks = useMemo(() => tasks.filter(task => task.listId === list.id), [tasks, list.id])
 

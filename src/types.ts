@@ -13,7 +13,7 @@ export interface List {
 }
 
 export interface Board {
-  id: number;
+  id: string;
   title: string;
   background: string;
 }
