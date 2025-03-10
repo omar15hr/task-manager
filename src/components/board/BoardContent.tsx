@@ -88,7 +88,6 @@ export function BoardContent() {
 
         if (tasks[activeIndex].listId != tasks[overIndex].listId) {
           tasks[activeIndex].listId = tasks[overIndex].listId;
-          console.log(overIndex);
           return arrayMove(
             tasks,
             activeIndex,

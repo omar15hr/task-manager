@@ -11,17 +11,17 @@ import { boardStore } from "@/store/boardStore";
 export function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [selectedBoard, setSelectedBoard] = useState<Board | null>(null);
 
+  const selectedBoard = boardStore( state => state.selectedBoard );
   const boards = boardStore( state => state.boards );
-  console.log(boards)
+  const setBoardSelected = boardStore( state => state.setBoardSelected );
 
   const toggleSidebar = () => {
     setCollapsed(!collapsed);
   };
 
   const handleSelectBoard = (board: Board) => {
-    setSelectedBoard(board);
+    setBoardSelected(board);
   };
 
   return (
