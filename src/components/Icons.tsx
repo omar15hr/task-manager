@@ -4,7 +4,7 @@ interface IconProps {
   className?: string;
 }
 
-export function X({ size = 24, onClickFn }: IconProps) {
+export function X({ size = 24, onClickFn, className }: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -16,7 +16,7 @@ export function X({ size = 24, onClickFn }: IconProps) {
       strokeWidth={2}
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="icon icon-tabler icons-tabler-outline icon-tabler-x cursor-pointer"
+      className={`icon icon-tabler icons-tabler-outline icon-tabler-x cursor-pointer ${className}`}
       onClick={onClickFn}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />

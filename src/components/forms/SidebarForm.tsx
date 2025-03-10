@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { BoardContext } from "@/store/BoardProvider";
+import { useContext, useState } from "react";
 
 const BACKGROUNDS = [
   { id: 1, background: "#8F3F65" },
@@ -15,6 +16,7 @@ interface SidebarFormProps {
 
 export function SidebarForm({setOpen}: SidebarFormProps) {
   const [hasError, setHasError] = useState(true);
+  const { addBoard } = useContext(BoardContext);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -29,7 +31,7 @@ export function SidebarForm({setOpen}: SidebarFormProps) {
       return;
     }
 
-    console.log(title);
+
     
     setHasError(true);
     setOpen(false);
@@ -87,6 +89,7 @@ export function SidebarForm({setOpen}: SidebarFormProps) {
       <button
         type="submit"
         disabled={hasError}
+        onClick={handleSubmit}
         className={`text-sm mt-5 w-full bg-[#343c42] hover:bg-[#444f57] p-2 rounded-sm ${
           hasError ? "cursor-not-allowed opacity-50" : "cursor-pointer"
         }`}

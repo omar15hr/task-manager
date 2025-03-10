@@ -1,10 +1,11 @@
 import { Plus } from "../Icons";
 import { ListOptionsPopover } from "./ListOptionsPopover";
 import { TaskContainer } from "../task/TaskContainer";
-import { boardStore } from "@/store/boardStore";
 import { List } from "@/types";
 import { useSortableConf } from "@/hooks/useSortableConf";
 import { SortableContext } from "@dnd-kit/sortable";
+import { BoardContext } from "@/store/BoardProvider";
+import { useContext, useMemo } from "react";
 
 interface ListProps {
   list: List;
@@ -12,8 +13,9 @@ interface ListProps {
 
 export function ListContainer({ list }: ListProps) {
   const { id, title } = list;
-  const tasks = boardStore((state) => state.tasks);
-  const filteredTasks = tasks.filter((task) => task.listId === id);
+  const { tasks } = useContext(BoardContext);
+
+  const filteredTasks = useMemo(() => tasks.filter(task => task.listId === list.id), [tasks, list.id])
 
   const { isDragging, style, setNodeRef, attributes, listeners } =
     useSortableConf({

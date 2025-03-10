@@ -3,24 +3,16 @@ import { ThreePoints, Toggle, X } from "../Icons";
 import { BoardOptionsPopover } from "./options/BoardOptionsPopover";
 import { AddBoardPopover } from "./add/AddBoardPopover";
 import { BoardDeletePopover } from "./delete/BoardDeletePopover";
+import { Board } from "@/types";
 
-const BOARDS = [
-  {
-    id: 1,
-    background: "#8F3F65",
-    title: "Trello",
-  },
-  {
-    id: 2,
-    background: "#352A57",
-    title: "Trello",
-  },
-];
+interface Props {
+  boards: Board[];
+}
 
-export function Sidebar() {
+export function Sidebar({ boards }: Props ) {
   const [collapsed, setCollapsed] = useState(false);
-  const [selectedBoard] = useState(BOARDS[0]);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [selectedBoard, setSelectedBoard] = useState<Board | null>(null);
 
   const toggleSidebar = () => {
     setCollapsed(!collapsed);
@@ -56,10 +48,10 @@ export function Sidebar() {
         </div>
 
         <ul className="flex flex-col gap-1">
-          {BOARDS.map((board) => (
+          {boards.map((board) => (
             <li
               className={`flex justify-between gap-3 rounded-md items-center cursor-pointer p-2 hover:bg-[#3F4046] 
-              ${selectedBoard.id === board.id ? "bg-[#64656d]" : ""} `}
+              ${selectedBoard?.id === board.id ? "bg-[#64656d]" : ""} `}
               key={board.id}
             >
               <div className="flex gap-2">

@@ -1,3 +1,5 @@
+export type Id = string | number
+
 export interface Task {
   id: number;
   title: string;
@@ -13,4 +15,7 @@ export interface List {
 export interface Board {
   id: number;
   title: string;
+  background: string;
 }
+
+export type ActiveTask = Task & { columnId: Id }

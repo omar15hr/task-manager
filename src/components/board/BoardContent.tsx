@@ -1,7 +1,6 @@
-import { boardStore } from "@/store/boardStore";
 import { ListContainer } from "../list/ListContainer";
 import { List, Task } from "@/types";
-import { useMemo, useState } from "react";
+import { FormEvent, useContext, useMemo, useState } from "react";
 import {
   DndContext,
   DragEndEvent,
@@ -12,20 +11,33 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import { SortableContext } from "@dnd-kit/sortable";
+import { arrayMove, SortableContext } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
 import { TaskContainer } from "../task/TaskContainer";
+import { BoardContext } from "@/store/BoardProvider";
+import { useListActions } from "@/hooks/useListActions";
+import { Plus, X } from "../Icons";
 
 export function BoardContent() {
   const [activeList, setActiveList] = useState<List | null>(null);
   const [activeTask, setActiveTask] = useState<Task | null>(null);
+  const [renderListForm, setRenderListForm] = useState(false);
 
-  const lists = boardStore((state) => state.lists);
-  const tasks = boardStore((state) => state.tasks);
-  const moveList = boardStore((state) => state.moveList);
-  const moveTask = boardStore((state) => state.moveTask);
-
+  const { lists, setTasks, setLists, boards } = useContext(BoardContext);
   const listsId = useMemo(() => lists.map((list) => list.id), [lists]);
+
+  const { addList } = useListActions();
+
+  const handleAddList = () => {
+    setRenderListForm(!renderListForm);
+  };
+
+  const handleSubmit = (e:FormEvent) => {
+    e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+    const title = formData.get("title") as string;
+    addList(title, lists);
+  }
 
   const onDragStart = (event: DragStartEvent) => {
     if (event.active.data.current?.type === "List") {
@@ -53,10 +65,12 @@ export function BoardContent() {
     const isActiveAList = active.data.current?.type === "List";
     if (!isActiveAList) return;
 
-    const activeListIndex = lists.findIndex((list) => list.id === activeId);
-    const overListIndex = lists.findIndex((list) => list.id === overId);
+    setLists((lists) => {
+      const activeListIndex = lists.findIndex((list) => list.id === activeId);
+      const overListIndex = lists.findIndex((list) => list.id === overId);
 
-    moveList(activeListIndex, overListIndex);
+      return arrayMove(lists, activeListIndex, overListIndex);
+    });
   };
 
   const onDragOver = (event: DragOverEvent) => {
@@ -74,25 +88,33 @@ export function BoardContent() {
     if (!isActiveATask) return;
 
     if (isActiveATask && isOverATask) {
-      const activeIndex = tasks.findIndex((t) => t.id === activeId);
-      const overIndex = tasks.findIndex((t) => t.id === overId);
+      setTasks((tasks) => {
+        const activeIndex = tasks.findIndex((t) => t.id === activeId);
+        const overIndex = tasks.findIndex((t) => t.id === overId);
 
-      if (activeIndex === -1 || overIndex === -1) return;
+        if (tasks[activeIndex].listId != tasks[overIndex].listId) {
+          tasks[activeIndex].listId = tasks[overIndex].listId;
+          console.log(overIndex);
+          return arrayMove(
+            tasks,
+            activeIndex,
+            overIndex === 0 ? 0 : overIndex - 1
+          );
+        }
 
-      const activeTask = tasks[activeIndex];
-      const overTask = tasks[overIndex];
-
-      if (!activeTask || !overTask) return;
-
-      if (activeTask.listId !== overTask.listId) {
-        moveTask(activeIndex, overIndex);
-      }
+        return arrayMove(tasks, activeIndex, overIndex);
+      });
     }
 
-    const isOverAColumn = over.data.current?.type === "List";
+    const isOverAList = over.data.current?.type === "List";
 
-    if (isActiveATask && isOverAColumn) {
-      moveTask(activeId as number, overId as number);
+    if (isActiveATask && isOverAList) {
+      setTasks((tasks) => {
+        const activeIndex = tasks.findIndex((t) => t.id === activeId);
+
+        tasks[activeIndex].listId = +overId;
+        return arrayMove(tasks, activeIndex, activeIndex);
+      });
     }
   };
 
@@ -105,26 +127,54 @@ export function BoardContent() {
   );
 
   return (
-    <DndContext
-      sensors={sensors}
-      onDragStart={onDragStart}
-      onDragEnd={onDragEnd}
-      onDragOver={onDragOver}
-    >
-      <SortableContext items={listsId}>
-        <div className="flex gap-5 p-5">
-          {lists.map((list) => (
-            <ListContainer key={list.id} list={list} />
-          ))}
-        </div>
-      </SortableContext>
-      {createPortal(
-        <DragOverlay>
-          {activeList && <ListContainer list={activeList} />}
-          {activeTask && <TaskContainer task={activeTask} />}
-        </DragOverlay>,
-        document.body
-      )}
-    </DndContext>
+    <div className="p-2">
+      <DndContext
+        sensors={sensors}
+        onDragStart={onDragStart}
+        onDragEnd={onDragEnd}
+        onDragOver={onDragOver}
+      >
+        <SortableContext items={listsId}>
+          <div>
+            {!renderListForm ? (
+              <button
+                onClick={handleAddList}
+                className="flex gap-1 text-white bg-white/30 hover:bg-white/25 p-2 rounded-md w-70 cursor-pointer"
+              >
+                <Plus size={24} />
+                <span>Añade otra lista</span>
+              </button>
+            ) : (
+              <form onSubmit={handleSubmit} className="w-70 flex gap-4 bg-[#101204] text-[#9EACBA] p-2 rounded-md flex-col">
+                <input
+                  type="text"
+                  name="title"
+                  placeholder="Introduce el nombre de la lista"
+                  className="p-1 bg-[#282E33] rounded-sm text-[#8C9BAB]"
+                />
+                <div className="flex gap-2 items-center">
+                  <button type="button" className="text-black bg-[#5090eb] hover:bg-[#579DFF] p-2 rounded-sm text-sm font-semibold cursor-pointer">
+                    Añadir lista
+                  </button>
+                  <X size={30} onClickFn={handleAddList} className="hover:bg-white/10 p-1 rounded-sm" />
+                </div>
+              </form>
+            )}
+          </div>
+          <div className="flex gap-5 p-5">
+            {lists.map((list) => (
+              <ListContainer key={list.id} list={list} />
+            ))}
+          </div>
+        </SortableContext>
+        {createPortal(
+          <DragOverlay>
+            {activeList && <ListContainer list={activeList} />}
+            {activeTask && <TaskContainer task={activeTask} />}
+          </DragOverlay>,
+          document.body
+        )}
+      </DndContext>
+    </div>
   );
 }
