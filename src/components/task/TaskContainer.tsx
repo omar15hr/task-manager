@@ -1,14 +1,13 @@
 import { useState } from "react";
 import { Circle, CircleCheck } from "../Icons";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "../UI/HoverCard";
+import { Task } from "@/types";
 
 interface TaskProps {
-  id: number;
-  title: string;
-  listId: number;
+  task: Task;
 }
 
-export function TaskContainer({ id, title }: TaskProps) {
+export function TaskContainer({ task }: TaskProps) {
   const [isCompleted, setIsCompleted] = useState(false);
 
   const handleComplete = () => {
@@ -17,7 +16,7 @@ export function TaskContainer({ id, title }: TaskProps) {
 
   return (
     <div
-      key={id}
+      key={task.id}
       className="group flex gap-3 items-center p-2 rounded-md bg-[#22272B] cursor-pointer text-sm hover:bg-[#2D3338] transition-colors duration-200"
     >
       <div
@@ -47,7 +46,7 @@ export function TaskContainer({ id, title }: TaskProps) {
           )}
         </HoverCard>
       </div>
-      <span>{title}</span>
+      <span>{task.title}</span>
     </div>
   );
 }
