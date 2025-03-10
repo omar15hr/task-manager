@@ -8,7 +8,7 @@ interface TaskProps {
   listId: number;
 }
 
-export function Task({ id, title }: TaskProps) {
+export function TaskContainer({ id, title }: TaskProps) {
   const [isCompleted, setIsCompleted] = useState(false);
 
   const handleComplete = () => {
