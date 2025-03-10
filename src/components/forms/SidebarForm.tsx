@@ -16,6 +16,7 @@ interface SidebarFormProps {
 
 export function SidebarForm({setOpen}: SidebarFormProps) {
   const [hasError, setHasError] = useState(true);
+  const [selectedBackground, setSelectedBackground] = useState<string | null>(null);
   const { addBoard } = useContext(BoardContext);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -31,8 +32,11 @@ export function SidebarForm({setOpen}: SidebarFormProps) {
       return;
     }
 
-
-    
+    addBoard({
+      id: +crypto.randomUUID(),
+      title,
+      background: selectedBackground as string,
+    })
     setHasError(true);
     setOpen(false);
     form.reset();
@@ -65,6 +69,7 @@ export function SidebarForm({setOpen}: SidebarFormProps) {
           {BACKGROUNDS.map((bg) => (
             <div key={bg.id} className="flex flex-row gap-2 items-center">
               <span
+                onClick={() => setSelectedBackground(bg.background)}
                 style={{ background: bg.background }}
                 className="w-10 h-10 rounded-md cursor-pointer hover:opacity-80"
               ></span>
@@ -87,9 +92,8 @@ export function SidebarForm({setOpen}: SidebarFormProps) {
       />
 
       <button
-        type="submit"
+        type="button"
         disabled={hasError}
-        onClick={handleSubmit}
         className={`text-sm mt-5 w-full bg-[#343c42] hover:bg-[#444f57] p-2 rounded-sm ${
           hasError ? "cursor-not-allowed opacity-50" : "cursor-pointer"
         }`}

@@ -15,7 +15,6 @@ import { arrayMove, SortableContext } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
 import { TaskContainer } from "../task/TaskContainer";
 import { BoardContext } from "@/store/BoardProvider";
-import { useListActions } from "@/hooks/useListActions";
 import { Plus, X } from "../Icons";
 
 export function BoardContent() {
@@ -26,7 +25,7 @@ export function BoardContent() {
   const { lists, setTasks, setLists, boards } = useContext(BoardContext);
   const listsId = useMemo(() => lists.map((list) => list.id), [lists]);
 
-  const { addList } = useListActions();
+
 
   const handleAddList = () => {
     setRenderListForm(!renderListForm);
@@ -36,7 +35,6 @@ export function BoardContent() {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     const title = formData.get("title") as string;
-    addList(title, lists);
   }
 
   const onDragStart = (event: DragStartEvent) => {

@@ -7,15 +7,23 @@ import { Board } from "@/types";
 
 interface Props {
   boards: Board[];
+  boardSelected: React.Dispatch<React.SetStateAction<Board | null>>;
 }
 
-export function Sidebar({ boards }: Props ) {
+export function Sidebar({ boards, boardSelected }: Props) {
   const [collapsed, setCollapsed] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [selectedBoard, setSelectedBoard] = useState<Board | null>(null);
 
+  console.log(boards)
+
   const toggleSidebar = () => {
     setCollapsed(!collapsed);
+  };
+
+  const handleSelectBoard = (board: Board) => {
+    boardSelected(board);
+    setSelectedBoard(board);
   };
 
   return (
@@ -53,6 +61,7 @@ export function Sidebar({ boards }: Props ) {
               className={`flex justify-between gap-3 rounded-md items-center cursor-pointer p-2 hover:bg-[#3F4046] 
               ${selectedBoard?.id === board.id ? "bg-[#64656d]" : ""} `}
               key={board.id}
+              onClick={() => handleSelectBoard(board)}
             >
               <div className="flex gap-2">
                 <div
