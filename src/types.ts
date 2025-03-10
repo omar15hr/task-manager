@@ -1,9 +1,9 @@
 export type Id = string | number
 
 export interface Task {
-  id: number;
+  id: string;
   title: string;
-  listId: number;
+  listId: string;
 }
 
 export interface List {

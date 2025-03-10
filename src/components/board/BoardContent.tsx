@@ -1,6 +1,6 @@
 import { ListContainer } from "../list/ListContainer";
 import { List, Task } from "@/types";
-import { FormEvent, useContext, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import {
   DndContext,
   DragEndEvent,
@@ -24,10 +24,13 @@ export function BoardContent() {
   const [renderListForm, setRenderListForm] = useState(false);
 
   const selectedBoard = boardStore( state => state.selectedBoard );
-  const addList = boardStore( state => state.addList );
+  const setLists = boardStore( state => state.setLists );
 
   const lists = boardStore( state => state.lists );
   const filteredLists = lists.filter(list => list.boardId === selectedBoard!.id);
+
+  const tasks = boardStore( state => state.tasks );
+  const setTasks = boardStore( state => state.setTasks );
 
   const listsId = useMemo(() => filteredLists.map((list) => list.id), [filteredLists]);
 
@@ -61,12 +64,13 @@ export function BoardContent() {
     const isActiveAList = active.data.current?.type === "List";
     if (!isActiveAList) return;
 
-    setLists((lists) => {
-      const activeListIndex = lists.findIndex((list) => list.id === activeId);
-      const overListIndex = lists.findIndex((list) => list.id === overId);
+    const updatedLists = arrayMove(
+      lists,
+      lists.findIndex(list => list.id === activeId),
+      lists.findIndex(list => list.id === overId)
+    );
 
-      return arrayMove(lists, activeListIndex, overListIndex);
-    });
+    setLists(updatedLists);
   };
 
   const onDragOver = (event: DragOverEvent) => {
@@ -84,21 +88,13 @@ export function BoardContent() {
     if (!isActiveATask) return;
 
     if (isActiveATask && isOverATask) {
-      setTasks((tasks) => {
-        const activeIndex = tasks.findIndex((t) => t.id === activeId);
-        const overIndex = tasks.findIndex((t) => t.id === overId);
+      const updatedTasks = arrayMove(
+        tasks,
+        tasks.findIndex(task => task.id === activeId),
+        tasks.findIndex(task => task.id === overId)
+      );
 
-        if (tasks[activeIndex].listId != tasks[overIndex].listId) {
-          tasks[activeIndex].listId = tasks[overIndex].listId;
-          return arrayMove(
-            tasks,
-            activeIndex,
-            overIndex === 0 ? 0 : overIndex - 1
-          );
-        }
-
-        return arrayMove(tasks, activeIndex, overIndex);
-      });
+      setTasks(updatedTasks);
     }
 
     const isOverAList = over.data.current?.type === "List";

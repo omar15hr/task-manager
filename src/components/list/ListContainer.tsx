@@ -4,8 +4,9 @@ import { TaskContainer } from "../task/TaskContainer";
 import { List } from "@/types";
 import { useSortableConf } from "@/hooks/useSortableConf";
 import { SortableContext } from "@dnd-kit/sortable";
-import { BoardContext } from "@/store/BoardProvider";
-import { useContext, useMemo } from "react";
+import { useMemo, useState } from "react";
+import { boardStore } from "@/store/boardStore";
+import { TaskForm } from "../forms/TaskForm";
 
 interface ListProps {
   list: List;
@@ -13,10 +14,18 @@ interface ListProps {
 
 export function ListContainer({ list }: ListProps) {
   const { id, title } = list;
+  const [renderTaskForm, setRenderTaskForm] = useState(false);
 
-  const tasks = []
+  const tasks = boardStore((state) => state.tasks);
 
-  const filteredTasks = useMemo(() => tasks.filter(task => task.listId === list.id), [tasks, list.id])
+  const filteredTasks = useMemo(
+    () => tasks.filter((task) => task.listId === list.id),
+    [tasks, list.id]
+  );
+
+  const handleAddTask = () => {
+    setRenderTaskForm(!renderTaskForm);
+  };
 
   const { isDragging, style, setNodeRef, attributes, listeners } =
     useSortableConf({
@@ -54,10 +63,17 @@ export function ListContainer({ list }: ListProps) {
             ))}
           </SortableContext>
         </div>
-        <div className="flex gap-1 items-center p-2 mt-2 hover:bg-gray-700/70 rounded-md cursor-pointer">
-          <Plus size={24} />
-          <span className="text-sm font-bold">Añade una tarjeta</span>
-        </div>
+        {!renderTaskForm ? (
+          <button
+            onClick={handleAddTask}
+            className="flex gap-1 items-center p-2 mt-2 hover:bg-gray-700/70 rounded-md cursor-pointer"
+          >
+            <Plus size={24} />
+            <span className="text-sm font-bold">Añade una tarjeta</span>
+          </button>
+        ) : (
+          <TaskForm listId={list.id} handleAddTask={handleAddTask} />
+        )}
       </div>
     </div>
   );

@@ -66,8 +66,8 @@ export function TaskContainer({ task }: TaskProps) {
           )}
         </HoverCard>
       </div>
-      <GripVertical {...attributes} {...listeners} />
       <span>{task.title}</span>
+      <GripVertical {...attributes} {...listeners} />
     </div>
   );
 }
