@@ -4,6 +4,7 @@ import { TaskContainer } from "../task/TaskContainer";
 import { boardStore } from "@/store/boardStore";
 import { List } from "@/types";
 import { useSortableConf } from "@/hooks/useSortableConf";
+import { SortableContext } from "@dnd-kit/sortable";
 
 interface ListProps {
   list: List;
@@ -44,9 +45,11 @@ export function ListContainer({ list }: ListProps) {
           <ListOptionsPopover />
         </div>
         <div className="flex flex-col gap-2 mt-2 p-1">
-          {filteredTasks.map((task) => (
-            <TaskContainer key={task.id} task={task} />
-          ))}
+          <SortableContext items={filteredTasks.map((task) => task.id)}>
+            {filteredTasks.map((task) => (
+              <TaskContainer key={task.id} task={task} />
+            ))}
+          </SortableContext>
         </div>
         <div className="flex gap-1 items-center p-2 mt-2 hover:bg-gray-700/70 rounded-md cursor-pointer">
           <Plus size={24} />

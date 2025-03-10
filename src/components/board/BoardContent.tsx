@@ -21,7 +21,9 @@ export function BoardContent() {
   const [activeTask, setActiveTask] = useState<Task | null>(null);
 
   const lists = boardStore((state) => state.lists);
-  const reorderLists = boardStore((state) => state.reorderLists);
+  const tasks = boardStore((state) => state.tasks);
+  const moveList = boardStore((state) => state.moveList);
+  const moveTask = boardStore((state) => state.moveTask);
 
   const listsId = useMemo(() => lists.map((list) => list.id), [lists]);
 
@@ -54,8 +56,7 @@ export function BoardContent() {
     const activeListIndex = lists.findIndex((list) => list.id === activeId);
     const overListIndex = lists.findIndex((list) => list.id === overId);
 
-    const boardId = lists[activeListIndex].boardId;
-    reorderLists(boardId, activeListIndex, overListIndex);
+    moveList(activeListIndex, overListIndex);
   };
 
   const onDragOver = (event: DragOverEvent) => {
@@ -72,20 +73,23 @@ export function BoardContent() {
 
     if (!isActiveATask) return;
 
-    const { tasks, reorderTasks, moveTask } = boardStore.getState();
-
     if (isActiveATask && isOverATask) {
       const activeIndex = tasks.findIndex((t) => t.id === activeId);
       const overIndex = tasks.findIndex((t) => t.id === overId);
 
-      if (tasks[activeIndex].listId !== tasks[overIndex].listId) {
-        moveTask(activeId as number, tasks[overIndex].listId);
-      } else {
-        reorderTasks(tasks[activeIndex].listId, activeIndex, overIndex);
+      if (activeIndex === -1 || overIndex === -1) return;
+
+      const activeTask = tasks[activeIndex];
+      const overTask = tasks[overIndex];
+
+      if (!activeTask || !overTask) return;
+
+      if (activeTask.listId !== overTask.listId) {
+        moveTask(activeIndex, overIndex);
       }
     }
 
-    const isOverAColumn = over.data.current?.type === "Column";
+    const isOverAColumn = over.data.current?.type === "List";
 
     if (isActiveATask && isOverAColumn) {
       moveTask(activeId as number, overId as number);
@@ -115,18 +119,12 @@ export function BoardContent() {
         </div>
       </SortableContext>
       {createPortal(
-          <DragOverlay>
-            {activeList && (
-              <ListContainer
-                list={activeList}
-              />
-            )}
-            {activeTask && (
-              <TaskContainer task={activeTask} />
-            )}
-          </DragOverlay>,
-          document.body
-        )}
+        <DragOverlay>
+          {activeList && <ListContainer list={activeList} />}
+          {activeTask && <TaskContainer task={activeTask} />}
+        </DragOverlay>,
+        document.body
+      )}
     </DndContext>
   );
 }
