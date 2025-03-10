@@ -10,14 +10,14 @@ const BACKGROUNDS = [
   { id: 6, background: "#4C2E1F" },
 ];
 
-interface SidebarFormProps {
+interface BoardFormProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export function SidebarForm({setOpen}: SidebarFormProps) {
+export function BoardForm({ setOpen }: BoardFormProps) {
   const [hasError, setHasError] = useState(true);
-  const [selectedBackground, setSelectedBackground] = useState<string>('');
-  const addBoard = boardStore(state => state.addBoard);
+  const [selectedBackground, setSelectedBackground] = useState<string>("");
+  const addBoard = boardStore((state) => state.addBoard);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -28,18 +28,19 @@ export function SidebarForm({setOpen}: SidebarFormProps) {
     const title = formData.get("title") as string;
 
     if (title.trim().length === 0) {
-      setHasError(true); 
+      setHasError(true);
       return;
     }
 
-    const background = selectedBackground?.length === 0 ? '#8F3F65' : selectedBackground;
+    const background =
+      selectedBackground?.length === 0 ? "#8F3F65" : selectedBackground;
 
     const newBoard = {
       id: crypto.randomUUID(),
       title,
-      background
+      background,
     };
-    
+
     addBoard(newBoard);
     setHasError(true);
     setOpen(false);
@@ -75,7 +76,11 @@ export function SidebarForm({setOpen}: SidebarFormProps) {
               <span
                 onClick={() => setSelectedBackground(bg.background)}
                 style={{ background: bg.background }}
-                className={`w-10 h-10 rounded-md cursor-pointer hover:opacity-80 ${selectedBackground === bg.background ? "border-2 border-blue-500" : "" }`}
+                className={`w-10 h-10 rounded-md cursor-pointer hover:opacity-80 ${
+                  selectedBackground === bg.background
+                    ? "border-2 border-blue-500"
+                    : ""
+                }`}
               ></span>
             </div>
           ))}

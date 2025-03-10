@@ -2,7 +2,7 @@ import { Plus, X } from "@/components/Icons";
 import { Popover, PopoverContent, PopoverTrigger } from '../../UI/Popover';
 
 import { useState } from "react";
-import { SidebarForm } from "@/components/forms/SidebarForm";
+import { BoardForm } from "@/components/forms/BoardForm";
 
 export function AddBoardPopover() {
   const [open, setOpen] = useState(false);
@@ -21,7 +21,7 @@ export function AddBoardPopover() {
               <X size={18} onClickFn={() => setOpen(false)} />
             </div>
           </div>
-          <SidebarForm setOpen={setOpen} />
+          <BoardForm setOpen={setOpen} />
         </div>
       </PopoverContent>
     </Popover>

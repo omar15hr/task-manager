@@ -7,9 +7,9 @@ export interface Task {
 }
 
 export interface List {
-  id: number;
+  id: string;
   title: string;
-  boardId: number;
+  boardId: string;
 }
 
 export interface Board {

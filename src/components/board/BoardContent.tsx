@@ -14,24 +14,26 @@ import {
 import { arrayMove, SortableContext } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
 import { TaskContainer } from "../task/TaskContainer";
-import { Plus, X } from "../Icons";
+import { Plus } from "../Icons";
+import { boardStore } from "@/store/boardStore";
+import { ListForm } from "../forms/ListForm";
 
 export function BoardContent() {
   const [activeList, setActiveList] = useState<List | null>(null);
   const [activeTask, setActiveTask] = useState<Task | null>(null);
   const [renderListForm, setRenderListForm] = useState(false);
 
-  const listsId = []
-  const lists = []
+  const selectedBoard = boardStore( state => state.selectedBoard );
+  const addList = boardStore( state => state.addList );
+
+  const lists = boardStore( state => state.lists );
+  const filteredLists = lists.filter(list => list.boardId === selectedBoard!.id);
+
+  const listsId = useMemo(() => filteredLists.map((list) => list.id), [filteredLists]);
 
   const handleAddList = () => {
     setRenderListForm(!renderListForm);
   };
-
-  const handleSubmit = (e:FormEvent) => {
-    e.preventDefault();
-    const formData = new FormData(e.target as HTMLFormElement);
-  }
 
   const onDragStart = (event: DragStartEvent) => {
     if (event.active.data.current?.type === "List") {
@@ -138,24 +140,11 @@ export function BoardContent() {
                 <span>Añade otra lista</span>
               </button>
             ) : (
-              <form onSubmit={handleSubmit} className="w-70 flex gap-4 bg-[#101204] text-[#9EACBA] p-2 rounded-md flex-col">
-                <input
-                  type="text"
-                  name="title"
-                  placeholder="Introduce el nombre de la lista"
-                  className="p-1 bg-[#282E33] rounded-sm text-[#8C9BAB]"
-                />
-                <div className="flex gap-2 items-center">
-                  <button type="button" className="text-black bg-[#5090eb] hover:bg-[#579DFF] p-2 rounded-sm text-sm font-semibold cursor-pointer">
-                    Añadir lista
-                  </button>
-                  <X size={30} onClickFn={handleAddList} className="hover:bg-white/10 p-1 rounded-sm" />
-                </div>
-              </form>
+              <ListForm handleAddList={handleAddList} />
             )}
           </div>
           <div className="flex gap-5 p-5">
-            {lists.map((list) => (
+            {filteredLists.map((list) => (
               <ListContainer key={list.id} list={list} />
             ))}
           </div>

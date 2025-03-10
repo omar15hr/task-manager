@@ -7,6 +7,8 @@ interface State {
   selectedBoard: Board | null;
   setBoardSelected: (board: Board) => void;
   addBoard: (board: Board) => void;
+  lists: List[];
+  addList: (list: List) => void;
 }
 
 export const boardStore = create<State>()(
@@ -23,6 +25,12 @@ export const boardStore = create<State>()(
         addBoard: (board) => {
           set((state) => ({
             boards: [...state.boards, board],
+          }));
+        },
+        lists: [],
+        addList: (list) => {
+          set((state) => ({
+            lists: [...state.lists, list],
           }));
         },
       };
