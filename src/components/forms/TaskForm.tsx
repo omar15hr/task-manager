@@ -38,7 +38,7 @@ export function TaskForm({ handleAddTask, listId }: TaskFormProps) {
         type="text"
         name="title"
         placeholder="Introduce el nombre de la lista"
-        className="p-2 bg-[#282E33] rounded-sm text-[#8C9BAB]"
+        className="p-2 bg-[#282E33] rounded-sm text-[#8C9BAB] "
       />
       <div className="flex gap-2 items-center">
         <button

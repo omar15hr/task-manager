@@ -126,16 +126,11 @@ export const boardStore = create<State>()(
         },
         deleteTask: (taskId) => {
           set((state) => {
-            const task = state.tasks.find(task => task.id === taskId);
-
-            if (!task) return {};
             const updatedTasks = state.tasks.filter(task => task.id !== taskId);
-            const updatedLists = state.lists.filter(list => list.id !== task.listId);
 
             return {
-              tasks: updatedTasks,
-              lists: updatedLists
-            };
+              tasks: updatedTasks
+            }
           });
         },
       };
