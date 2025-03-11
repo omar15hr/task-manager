@@ -30,14 +30,15 @@ export function BoardContent() {
 
   const lists = boardStore((state) => state.lists);
   const moveList = boardStore((state) => state.moveList);
-  const filteredLists = lists.filter(
-    (list) => list.boardId === selectedBoard!.id
-  );
+  const filteredLists = useMemo(() => {
+    return lists.filter((list) => list.boardId === selectedBoard?.id);
+  }, [lists, selectedBoard]);
 
   const listsId = useMemo(
     () => filteredLists.map((list) => list.id),
     [filteredLists]
   );
+
 
   const handleAddList = () => {
     setRenderListForm(!renderListForm);
@@ -69,8 +70,10 @@ export function BoardContent() {
     const isActiveAList = active.data.current?.type === "List";
     if (!isActiveAList) return;
 
-    const oldIndex = filteredLists.findIndex((list) => list.id === activeId);
-    const newIndex = filteredLists.findIndex((list) => list.id === overId);
+    const oldIndex = lists.findIndex((list) => list.id === activeId);
+    const newIndex = lists.findIndex((list) => list.id === overId);
+
+    console.log(oldIndex, newIndex);
 
     if (oldIndex === -1 || newIndex === -1) return;
 
