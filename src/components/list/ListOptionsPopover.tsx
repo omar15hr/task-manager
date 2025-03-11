@@ -28,10 +28,10 @@ export function ListOptionsPopover({ listId }: ListOptionsPopoverProps) {
           </div>
           <hr className="border-[#3c4146] border-1 w-full" />
           <div className="flex flex-col gap-2 text-sm text-left items-start mt-3">
-            <button className={styleButton}>Añadir tarjeta</button>
+            {/* <button className={styleButton}>Añadir tarjeta</button>
             <button className={styleButton}>Mover lista</button>
             <button className={styleButton}>Mover todas las tarjetas de esta lista</button>
-            <button className={styleButton}>Ordenar por...</button>
+            <button className={styleButton}>Ordenar por...</button> */}
             <button className={styleButton} onClick={() => deleteList(listId)}>Eliminar lista</button>
           </div>
         </div>

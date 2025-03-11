@@ -5,9 +5,10 @@ import { Board, List, Task } from "@/types";
 interface State {
   boards: Board[];
   selectedBoard: Board | null;
-  setBoardSelected: (board: Board) => void;
+  setBoardSelected: (board: Board | null) => void;
   addBoard: (board: Board) => void;
   deleteBoard: (boardId: string) => void;
+  setBoards: (board: Board[]) => void;
   lists: List[];
   addList: (list: List) => void;
   moveList: (oldIndex: number, newIndex: number) => void;
@@ -42,16 +43,29 @@ export const boardStore = create<State>()(
         },
         deleteBoard: (boardId) => {
           set((state) => {
-            const updatedBoards = state.boards.filter(board => board.id !== boardId);
-            const updatedLists = state.lists.filter(list => list.boardId !== boardId);
-            const updatedTasks = state.tasks.filter(task => !updatedLists.some(list => list.id === task.listId));
-        
+            const updatedBoards = state.boards.filter(
+              (board) => board.id !== boardId
+            );
+            const updatedLists = state.lists.filter(
+              (list) => list.boardId !== boardId
+            );
+            const updatedTasks = state.tasks.filter(
+              (task) => !updatedLists.some((list) => list.id === task.listId)
+            );
+
             return {
               boards: updatedBoards,
+              selectedBoard: state.selectedBoard?.id === boardId ? null : state.selectedBoard,
               lists: updatedLists,
-              tasks: updatedTasks
+              tasks: updatedTasks,
             };
           });
+        },
+        setBoards: (boards) => {
+          set((state) => {
+            const selectedBoard = state.selectedBoard && boards.find(board => board.id === state.selectedBoard?.id) ? state.selectedBoard : boards[0] || null;
+            return { boards, selectedBoard };
+          })
         },
         lists: [],
         addList: (list) => {
@@ -71,12 +85,16 @@ export const boardStore = create<State>()(
         },
         deleteList: (listId) => {
           set((state) => {
-            const updatedLists = state.lists.filter(list => list.id !== listId);
-            const updatedTasks = state.tasks.filter(task => !updatedLists.some(list => list.id === task.listId));
+            const updatedLists = state.lists.filter(
+              (list) => list.id !== listId
+            );
+            const updatedTasks = state.tasks.filter(
+              (task) => !updatedLists.some((list) => list.id === task.listId)
+            );
 
             return {
               lists: updatedLists,
-              tasks: updatedTasks
+              tasks: updatedTasks,
             };
           });
         },
@@ -120,17 +138,21 @@ export const boardStore = create<State>()(
         toggleTaskCompletion: (taskId) => {
           set((state) => ({
             tasks: state.tasks.map((task) =>
-              task.id === taskId ? { ...task, isCompleted: !task.isCompleted } : task
+              task.id === taskId
+                ? { ...task, isCompleted: !task.isCompleted }
+                : task
             ),
           }));
         },
         deleteTask: (taskId) => {
           set((state) => {
-            const updatedTasks = state.tasks.filter(task => task.id !== taskId);
+            const updatedTasks = state.tasks.filter(
+              (task) => task.id !== taskId
+            );
 
             return {
-              tasks: updatedTasks
-            }
+              tasks: updatedTasks,
+            };
           });
         },
       };

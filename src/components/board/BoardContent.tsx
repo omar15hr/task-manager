@@ -24,12 +24,19 @@ export function BoardContent() {
   const [renderListForm, setRenderListForm] = useState(false);
 
   const selectedBoard = boardStore((state) => state.selectedBoard);
+  const boards = boardStore(state => state.boards);
+
+
+  const isBoardEmpty = boards.length === 0 ? true : false;
 
   const tasks = boardStore((state) => state.tasks);
   const moveTask = boardStore((state) => state.moveTask);
 
   const lists = boardStore((state) => state.lists);
   const moveList = boardStore((state) => state.moveList);
+
+
+
   const filteredLists = useMemo(() => {
     return lists.filter((list) => list.boardId === selectedBoard?.id);
   }, [lists, selectedBoard]);
@@ -142,11 +149,14 @@ export function BoardContent() {
           <div>
             {!renderListForm ? (
               <button
+              disabled={isBoardEmpty}
                 onClick={handleAddList}
-                className="flex gap-1 text-white bg-white/30 hover:bg-white/25 p-2 rounded-md w-70 cursor-pointer"
+                className={`flex gap-1 text-white bg-white/30 hover:bg-white/25 p-2 rounded-md w-70 cursor-pointer ${
+                  isBoardEmpty ? "cursor-not-allowed opacity-50" : "cursor-pointer"
+                }`}
               >
                 <Plus size={24} />
-                <span>Añade otra lista</span>
+                <span  >Añade otra lista</span>
               </button>
             ) : (
               <ListForm handleAddList={handleAddList} />

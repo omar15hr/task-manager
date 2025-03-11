@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ThreePoints, Toggle, X } from "../Icons";
-import { BoardOptionsPopover } from "./options/BoardOptionsPopover";
+// import { BoardOptionsPopover } from "./options/BoardOptionsPopover";
 import { AddBoardPopover } from "./add/AddBoardPopover";
 import { BoardDeletePopover } from "./delete/BoardDeletePopover";
 import { Board } from "@/types";
@@ -14,7 +14,7 @@ export function Sidebar() {
 
   const selectedBoard = boardStore( state => state.selectedBoard );
   const boards = boardStore( state => state.boards );
-  const setBoardSelected = boardStore( state => state.setBoardSelected );
+  const setBoardSelected = boardStore( state => state.setBoardSelected )
 
   const toggleSidebar = () => {
     setCollapsed(!collapsed);
@@ -44,11 +44,11 @@ export function Sidebar() {
       <hr
         className={!collapsed ? "border-[#2e2d2e] border-1 w-full" : "hidden"}
       />
-      <nav className={!collapsed ? "border-[#2e2d2e] w-full p-3" : "hidden"}>
+      <aside className={!collapsed ? "border-[#2e2d2e] w-full p-3" : "hidden"}>
         <div className="flex justify-between mb-4">
           <span className="font-bold">Sus tableros</span>
           <div className="flex gap-4">
-            <BoardOptionsPopover />
+            {/* <BoardOptionsPopover /> */}
             <AddBoardPopover />
           </div>
         </div>
@@ -76,7 +76,8 @@ export function Sidebar() {
             </li>
           ))}
         </ul>
-      </nav>
+      </aside>
+      <span className="text-[12px] p-2 bg-white/20 mt-5 text-center">Selecciona un tablero antes de crear tareas</span>
     </div>
   );
 }

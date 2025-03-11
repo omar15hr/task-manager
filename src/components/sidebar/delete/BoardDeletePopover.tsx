@@ -14,10 +14,12 @@ interface Props {
 export function BoardDeletePopover({ isDeleting, setIsDeleting, board }: Props) {
   const [open, setOpen] = useState(false);
   const deleteBoard = boardStore((state) => state.deleteBoard);
+  const setBoardSelected = boardStore(state => state.setBoardSelected);
 
   const handleDelete = () => {
     setIsDeleting(!isDeleting);
     deleteBoard(board.id);
+    setBoardSelected(null)
   };
 
   return (
