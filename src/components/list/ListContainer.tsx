@@ -54,7 +54,7 @@ export function ListContainer({ list }: ListProps) {
           >
             {title}
           </h3>
-          <ListOptionsPopover />
+          <ListOptionsPopover listId={list.id} />
         </div>
         <div className="flex flex-col gap-2 mt-2 p-1">
           <SortableContext items={filteredTasks.map((task) => task.id)}>

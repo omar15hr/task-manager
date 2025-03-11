@@ -1,9 +1,17 @@
 import { Popover, PopoverContent, PopoverTrigger } from "../UI/Popover";
 import { Dots, X } from "../Icons";
 import { useState } from "react";
+import { boardStore } from "@/store/boardStore";
 
-export function ListOptionsPopover() {
+interface ListOptionsPopoverProps {
+  listId: string;
+}
+
+export function ListOptionsPopover({ listId }: ListOptionsPopoverProps) {
   const [open, setOpen] = useState(false);
+  const deleteList = boardStore((state) => state.deleteList);
+
+  const styleButton = `cursor-pointer hover:bg-white/20 w-full text-left p-2 rounded-sm`;
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger>
@@ -19,12 +27,12 @@ export function ListOptionsPopover() {
             </div>
           </div>
           <hr className="border-[#3c4146] border-1 w-full" />
-          <div className="flex flex-col gap-4 text-sm text-left items-start">
-            <button>Añadir tarjeta</button>
-            <button>Mover lista</button>
-            <button>Mover todas las tarjetas de esta lista</button>
-            <button>Ordenar por...</button>
-            <button>Eliminar lista</button>
+          <div className="flex flex-col gap-2 text-sm text-left items-start mt-3">
+            <button className={styleButton}>Añadir tarjeta</button>
+            <button className={styleButton}>Mover lista</button>
+            <button className={styleButton}>Mover todas las tarjetas de esta lista</button>
+            <button className={styleButton}>Ordenar por...</button>
+            <button className={styleButton} onClick={() => deleteList(listId)}>Eliminar lista</button>
           </div>
         </div>
       </PopoverContent>
