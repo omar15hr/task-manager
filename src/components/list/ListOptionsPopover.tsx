@@ -19,11 +19,12 @@ export function ListOptionsPopover() {
             </div>
           </div>
           <hr className="border-[#3c4146] border-1 w-full" />
-          <div>
-            <p>
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-              Consequuntur, eos.
-            </p>
+          <div className="flex flex-col gap-4 text-sm text-left items-start">
+            <button>Añadir tarjeta</button>
+            <button>Mover lista</button>
+            <button>Mover todas las tarjetas de esta lista</button>
+            <button>Ordenar por...</button>
+            <button>Eliminar lista</button>
           </div>
         </div>
       </PopoverContent>

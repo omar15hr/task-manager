@@ -69,6 +69,7 @@ export function Sidebar() {
                 <span className="text-sm">{board.title}</span>
               </div>
               <BoardDeletePopover
+                board={board}
                 isDeleting={isDeleting}
                 setIsDeleting={setIsDeleting}
               />

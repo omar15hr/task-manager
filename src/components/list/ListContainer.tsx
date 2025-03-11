@@ -59,7 +59,10 @@ export function ListContainer({ list }: ListProps) {
         <div className="flex flex-col gap-2 mt-2 p-1">
           <SortableContext items={filteredTasks.map((task) => task.id)}>
             {filteredTasks.map((task) => (
-              <TaskContainer key={task.id} task={task} />
+              <TaskContainer
+                key={task.id}
+                task={task}
+              />
             ))}
           </SortableContext>
         </div>

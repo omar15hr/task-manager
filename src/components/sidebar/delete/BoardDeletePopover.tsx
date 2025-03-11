@@ -2,17 +2,22 @@ import { ChevronLeft, Dots, X } from "@/components/Icons";
 import { Popover, PopoverContent, PopoverTrigger } from '../../UI/Popover';
 import { useState } from "react";
 import { BoardDeleteDropdownMenu } from "./BoardDeleteDropdownMenu";
+import { boardStore } from "@/store/boardStore";
+import { Board } from "@/types";
 
 interface Props {
   isDeleting: boolean;
   setIsDeleting: React.Dispatch<React.SetStateAction<boolean>>;
+  board: Board;
 }
 
-export function BoardDeletePopover({ isDeleting, setIsDeleting }: Props) {
+export function BoardDeletePopover({ isDeleting, setIsDeleting, board }: Props) {
   const [open, setOpen] = useState(false);
+  const deleteBoard = boardStore((state) => state.deleteBoard);
 
   const handleDelete = () => {
     setIsDeleting(!isDeleting);
+    deleteBoard(board.id);
   };
 
   return (

@@ -22,6 +22,7 @@ export function TaskForm({ handleAddTask, listId }: TaskFormProps) {
     const newTask = {
       id: crypto.randomUUID(),
       title,
+      isCompleted: false,
       listId,
     };
     addTask(newTask);

@@ -7,6 +7,7 @@ interface State {
   selectedBoard: Board | null;
   setBoardSelected: (board: Board) => void;
   addBoard: (board: Board) => void;
+  deleteBoard: (boardId: string) => void;
   lists: List[];
   addList: (list: List) => void;
   moveList: (oldIndex: number, newIndex: number) => void;
@@ -18,6 +19,7 @@ interface State {
     oldIndex: number,
     newIndex: number
   ) => void;
+  toggleTaskCompletion: (taskId: string) => void;
 }
 
 export const boardStore = create<State>()(
@@ -36,6 +38,19 @@ export const boardStore = create<State>()(
             boards: [...state.boards, board],
           }));
         },
+        deleteBoard: (boardId) => {
+          set((state) => {
+            const updatedBoards = state.boards.filter(board => board.id !== boardId);
+            const updatedLists = state.lists.filter(list => list.boardId !== boardId);
+            const updatedTasks = state.tasks.filter(task => !updatedLists.some(list => list.id === task.listId));
+        
+            return {
+              boards: updatedBoards,
+              lists: updatedLists,
+              tasks: updatedTasks
+            };
+          });
+        },
         lists: [],
         addList: (list) => {
           set((state) => ({
@@ -45,10 +60,10 @@ export const boardStore = create<State>()(
         moveList: (oldIndex, newIndex) => {
           set((state) => {
             const lists = [...state.lists];
-        
+
             const [movedList] = lists.splice(oldIndex, 1);
             lists.splice(newIndex, 0, movedList);
-        
+
             return { lists };
           });
         },
@@ -89,6 +104,13 @@ export const boardStore = create<State>()(
             return { tasks: updatedTasks };
           });
         },
+        toggleTaskCompletion: (taskId) => {
+          set((state) => ({
+            tasks: state.tasks.map((task) =>
+              task.id === taskId ? { ...task, isCompleted: !task.isCompleted } : task
+            ),
+          }));
+        }
       };
     },
     {

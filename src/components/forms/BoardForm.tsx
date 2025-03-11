@@ -5,9 +5,13 @@ const BACKGROUNDS = [
   { id: 1, background: "#8F3F65" },
   { id: 2, background: "#352A57" },
   { id: 3, background: "#4C2E5D" },
-  { id: 4, background: "#4C2E3D" },
-  { id: 5, background: "#4C2E2D" },
+  { id: 4, background: "#24798A" },
+  { id: 5, background: "#10549A" },
   { id: 6, background: "#4C2E1F" },
+  { id: 7, background: "#A24226" },
+  { id: 8, background: "#F2B705" },
+  { id: 9, background: "#AC6C2A" },
+  { id: 10, background: "#396A28" },
 ];
 
 interface BoardFormProps {
@@ -62,14 +66,8 @@ export function BoardForm({ setOpen }: BoardFormProps) {
       onSubmit={handleSubmit}
       className="flex flex-col items-center justify-center gap-2 mt-5"
     >
-      <img
-        src="https://i.imgur.com/1f2z3hL.png"
-        className="h-30 w-50 rounded-md object-cover"
-        alt=""
-      />
-
       <div className="flex flex-col gap-2">
-        <label className="self-start text-xs font-bold mt-5">Fondo</label>
+        <label className="self-start text-xs font-bold mt-2">Fondo</label>
         <div className="flex flex-wrap gap-2 justify-center">
           {BACKGROUNDS.map((bg) => (
             <div key={bg.id} className="flex flex-row gap-2 items-center">

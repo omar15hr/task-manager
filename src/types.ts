@@ -4,6 +4,7 @@ export interface Task {
   id: string;
   title: string;
   listId: string;
+  isCompleted: boolean;
 }
 
 export interface List {
