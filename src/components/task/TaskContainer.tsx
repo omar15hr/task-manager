@@ -27,7 +27,7 @@ export function TaskContainer({ task }: TaskProps) {
       <div
         ref={setNodeRef}
         style={style}
-        className={`h-18 w-full opacity-50 p-4 bg-mainBackgroundColor border-2 border-columnBackgroundColor rounded-md`}
+        className={`h-12 w-full opacity-50 p-4 bg-mainBackgroundColor border-2 border-columnBackgroundColor rounded-md`}
       />
     );
   }

@@ -11,7 +11,7 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import { arrayMove, SortableContext } from "@dnd-kit/sortable";
+import { SortableContext } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
 import { TaskContainer } from "../task/TaskContainer";
 import { Plus } from "../Icons";
@@ -23,16 +23,21 @@ export function BoardContent() {
   const [activeTask, setActiveTask] = useState<Task | null>(null);
   const [renderListForm, setRenderListForm] = useState(false);
 
-  const selectedBoard = boardStore( state => state.selectedBoard );
-  const setLists = boardStore( state => state.setLists );
+  const selectedBoard = boardStore((state) => state.selectedBoard);
 
-  const lists = boardStore( state => state.lists );
-  const filteredLists = lists.filter(list => list.boardId === selectedBoard!.id);
+  const tasks = boardStore((state) => state.tasks);
+  const moveTask = boardStore((state) => state.moveTask);
 
-  const tasks = boardStore( state => state.tasks );
-  const setTasks = boardStore( state => state.setTasks );
+  const lists = boardStore((state) => state.lists);
+  const moveList = boardStore((state) => state.moveList);
+  const filteredLists = lists.filter(
+    (list) => list.boardId === selectedBoard!.id
+  );
 
-  const listsId = useMemo(() => filteredLists.map((list) => list.id), [filteredLists]);
+  const listsId = useMemo(
+    () => filteredLists.map((list) => list.id),
+    [filteredLists]
+  );
 
   const handleAddList = () => {
     setRenderListForm(!renderListForm);
@@ -64,13 +69,12 @@ export function BoardContent() {
     const isActiveAList = active.data.current?.type === "List";
     if (!isActiveAList) return;
 
-    const updatedLists = arrayMove(
-      lists,
-      lists.findIndex(list => list.id === activeId),
-      lists.findIndex(list => list.id === overId)
-    );
+    const oldIndex = filteredLists.findIndex((list) => list.id === activeId);
+    const newIndex = filteredLists.findIndex((list) => list.id === overId);
 
-    setLists(updatedLists);
+    if (oldIndex === -1 || newIndex === -1) return;
+
+    moveList(oldIndex, newIndex);
   };
 
   const onDragOver = (event: DragOverEvent) => {
@@ -84,28 +88,34 @@ export function BoardContent() {
 
     const isActiveATask = active.data.current?.type === "Task";
     const isOverATask = over.data.current?.type === "Task";
+    const isOverAList = over.data.current?.type === "List";
 
     if (!isActiveATask) return;
 
-    if (isActiveATask && isOverATask) {
-      const updatedTasks = arrayMove(
-        tasks,
-        tasks.findIndex(task => task.id === activeId),
-        tasks.findIndex(task => task.id === overId)
-      );
+    const oldListId = active.data.current?.item.listId;
 
-      setTasks(updatedTasks);
+    if (isOverATask) {
+      const newListId = over.data.current?.item.listId;
+
+      const oldIndex = tasks
+        .filter((task) => task.listId === oldListId)
+        .findIndex((task) => task.id === activeId);
+
+      const newIndex = tasks
+        .filter((task) => task.listId === newListId)
+        .findIndex((task) => task.id === overId);
+
+      moveTask(oldListId, newListId, oldIndex, newIndex);
     }
 
-    const isOverAList = over.data.current?.type === "List";
+    if (isOverAList) {
+      const newListId = over.data.current?.item.id;
 
-    if (isActiveATask && isOverAList) {
-      setTasks((tasks) => {
-        const activeIndex = tasks.findIndex((t) => t.id === activeId);
+      const oldIndex = tasks
+        .filter((task) => task.listId === oldListId)
+        .findIndex((task) => task.id === activeId);
 
-        tasks[activeIndex].listId = +overId;
-        return arrayMove(tasks, activeIndex, activeIndex);
-      });
+      moveTask(oldListId, newListId, oldIndex, 0);
     }
   };
 

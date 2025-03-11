@@ -47,13 +47,13 @@ export function ListContainer({ list }: ListProps) {
     <div key={id} ref={setNodeRef} style={style}>
       <div className="w-70 bg-[#101204] text-[#9EACBA] p-2 rounded-md flex flex-col">
         <div className="flex justify-between items-center">
-          <h2
-            className="p-2 font-bold cursor-pointer w-full"
+          <h3
+            className="p-2 text-sm font-bold cursor-pointer w-full"
             {...attributes}
             {...listeners}
           >
             {title}
-          </h2>
+          </h3>
           <ListOptionsPopover />
         </div>
         <div className="flex flex-col gap-2 mt-2 p-1">
