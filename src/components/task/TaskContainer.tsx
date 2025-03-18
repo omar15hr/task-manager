@@ -60,9 +60,9 @@ export function TaskContainer({ task }: TaskProps) {
             <HoverCard>
               <HoverCardTrigger>
                 {!task.isCompleted ? (
-                  <Circle size={24} className="hover:text-[#b3c3d3]" />
+                  <Circle size={24} className="hover:text-[#b3c3d3] hover:scale-105 transition" />
                 ) : (
-                  <CircleCheck size={24} />
+                  <CircleCheck size={24} className="hover:scale-105 transition" />
                 )}
               </HoverCardTrigger>
               {!task.isCompleted ? (
