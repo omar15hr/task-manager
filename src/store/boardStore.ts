@@ -37,9 +37,12 @@ export const boardStore = create<State>()(
           }));
         },
         addBoard: (board) => {
-          set((state) => ({
-            boards: [...state.boards, board],
-          }));
+          set((state) => {
+            return {
+              boards: [...state.boards, board],
+              selectedBoard: board,
+            };
+          });
         },
         deleteBoard: (boardId) => {
           set((state) => {
@@ -55,7 +58,10 @@ export const boardStore = create<State>()(
 
             return {
               boards: updatedBoards,
-              selectedBoard: state.selectedBoard?.id === boardId ? null : state.selectedBoard,
+              selectedBoard:
+                state.selectedBoard?.id === boardId
+                  ? null
+                  : state.selectedBoard,
               lists: updatedLists,
               tasks: updatedTasks,
             };
@@ -63,9 +69,13 @@ export const boardStore = create<State>()(
         },
         setBoards: (boards) => {
           set((state) => {
-            const selectedBoard = state.selectedBoard && boards.find(board => board.id === state.selectedBoard?.id) ? state.selectedBoard : boards[0] || null;
+            const selectedBoard =
+              state.selectedBoard &&
+              boards.find((board) => board.id === state.selectedBoard?.id)
+                ? state.selectedBoard
+                : boards[0] || null;
             return { boards, selectedBoard };
-          })
+          });
         },
         lists: [],
         addList: (list) => {
