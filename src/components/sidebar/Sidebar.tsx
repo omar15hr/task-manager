@@ -77,7 +77,6 @@ export function Sidebar() {
           ))}
         </ul>
       </aside>
-      <span className="text-[12px] p-2 bg-white/20 mt-5 text-center">Selecciona un tablero antes de crear tareas</span>
     </div>
   );
 }
